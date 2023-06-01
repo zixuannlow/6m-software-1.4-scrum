@@ -54,7 +54,7 @@ class Permission{
 
         switch(this.#role.toUpperCase()){
             case Permission.RolesConst.OWNER:
-                return true;
+                return true; 
             case Permission.RolesConst.EDITOR:
                 if(ops === Permission.OperationsConst.READ || ops === Permission.OperationsConst.CREATE || ops === Permission.OperationsConst.UPDATE){
                     return true;
@@ -62,6 +62,7 @@ class Permission{
                 return false;
             case Permission.RolesConst.READER:
                 if(ops === Permission.OperationsConst.READ){
+                    console.log("allowed");
                     return true;
                 }
                 return false;
@@ -72,4 +73,22 @@ class Permission{
     }
 }
 
-// Add code here
+class Document extends Permission {
+ 
+    #content;
+    constructor(role, operation, content){
+        super(role,operation);
+        this.#content = content;
+    }
+
+    process(){
+        if(super.check() === true){
+            console.log("Allowed");
+        }else{
+            console.log("Blocked");
+        }
+    }
+}
+
+const d = new Document(Permission.RolesConst.READER, Permission.OperationsConst.UPDATE, "Hello content")
+d.process(); 
